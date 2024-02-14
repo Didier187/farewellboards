@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardContent,
@@ -6,16 +7,83 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import { formatDate } from "@/lib/utils";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
+import { Button } from "./ui/button";
+import { deleteFarewellBoard } from "@/actions/farewell-board";
+import { toast } from "sonner";
+import Link from "next/link";
+
 function FarewellCard(props: {
   farewell_for: string;
   description: string;
   created_at: string;
+  id: number;
 }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{props.farewell_for}</CardTitle>
+        <CardTitle>
+          <div className="flex items-center justify-between">
+            <span>{props.farewell_for}</span>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="rounded-full" variant="outline" size="icon">
+                  <DotsVerticalIcon />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent sideOffset={5}>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <Link href={`/board/edit/${props.id}`}>
+                  <DropdownMenuItem className="cursor-pointer">
+                    Edit
+                  </DropdownMenuItem>
+                </Link>
+                <Link href={`/board/view/${props.id}`}>
+                  <DropdownMenuItem className="cursor-pointer">
+                    View
+                  </DropdownMenuItem>
+                </Link>
+
+                <DropdownMenuItem className="cursor-pointer">
+                  Share
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="text-red-700 cursor-pointer"
+                  onClick={async () => {
+                    deleteFarewellBoard(props.id)
+                      .then((res) => {
+                        toast.success("Farewell board deleted successfully", {
+                          duration: 4000,
+                          description:
+                            "Your farewell board has been deleted successfully.",
+                        });
+                      })
+                      .catch((e) => {
+                        toast.error("Failed to delete farewell board", {
+                          duration: 4000,
+                          description: e.message,
+                        });
+                      });
+                  }}
+                >
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <CardDescription>{props.description}</CardDescription>
