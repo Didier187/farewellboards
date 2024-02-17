@@ -1,17 +1,25 @@
-import AuthButton from "../components/AuthButton";
-import { createClient } from "@/utils/supabase/server";
+import { CreateBoardForm } from "@/components/CreateBoardForm";
 import { FarewellCard } from "@/components/FarewellCard";
 import { Header } from "@/components/Header";
+import Landing from "@/components/Landing";
+import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
-import { CreateBoardForm } from "@/components/CreateBoardForm";
+import AuthButton from "../components/AuthButton";
 
 export default async function Index() {
+
   const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data } = await supabase
     .from("farewellboard")
     .select()
     .order("created_at", { ascending: false });
+
+  if (!user) return <Landing />;
+  
   return (
     <div className="flex flex-col items-center flex-1 w-full gap-20 max-w-[1200px] px-4 pb-6">
       <Header>

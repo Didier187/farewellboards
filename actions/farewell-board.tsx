@@ -1,26 +1,36 @@
 "use server";
+
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
-const supabase = createClient();
 
 const createFarewellBoard = async (formData: FormData) => {
+  const supabase = createClient();
+
   const farewell_for = formData.get("farewell_for") as string;
   const description = formData.get("description") as string;
   const created_at = new Date().toISOString();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   const { data, error } = await supabase
     .from("farewellboard")
-    .insert([{ farewell_for, description, created_at }]);
+    .insert([{ farewell_for, description, created_at, user_id: user?.id }]);
   //revalidate the page
   revalidatePath("/");
 
   if (error) {
     return console.error(error);
   }
+
   return data;
 };
 
 // delete farewell board
 const deleteFarewellBoard = async (id: number) => {
+  const supabase = createClient();
+
   const { data, error } = await supabase
     .from("farewellboard")
     .delete()
@@ -33,6 +43,7 @@ const deleteFarewellBoard = async (id: number) => {
   }
   return data;
 };
+
 // update farewell board
 const updateFarewellBoard = async (
   id: number,
@@ -41,6 +52,8 @@ const updateFarewellBoard = async (
     description: string;
   }
 ) => {
+  const supabase = createClient();
+
   const { farewell_for, description } = formData;
   const { data, error } = await supabase
     .from("farewellboard")
@@ -53,4 +66,23 @@ const updateFarewellBoard = async (
   }
   return data;
 };
-export { createFarewellBoard, deleteFarewellBoard, updateFarewellBoard };
+
+// read farewell board by id
+const getFarewellBoard = async (id: number) => {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from("farewellboard")
+    .select()
+    .eq("id", id)
+    .single();
+
+  return [data, error];
+};
+
+export {
+  createFarewellBoard,
+  deleteFarewellBoard,
+  getFarewellBoard,
+  updateFarewellBoard,
+};

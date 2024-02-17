@@ -1,13 +1,5 @@
 "use client";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -15,13 +7,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { deleteFarewellBoard } from "@/actions/farewell-board";
 import { formatDate } from "@/lib/utils";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
-import { Button } from "./ui/button";
-import { deleteFarewellBoard } from "@/actions/farewell-board";
-import { toast } from "sonner";
 import Link from "next/link";
+import { toast } from "sonner";
+import { Button } from "./ui/button";
 
 function FarewellCard(props: {
   farewell_for: string;
@@ -44,7 +43,8 @@ function FarewellCard(props: {
               <DropdownMenuContent sideOffset={5}>
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href={`/board/edit/${props.id}`}>
+
+                <Link href={`/edit/${props.id}`}>
                   <DropdownMenuItem className="cursor-pointer">
                     Edit
                   </DropdownMenuItem>
