@@ -13,7 +13,7 @@ export const metadata = {
   description: "Create and share farewell boards for your loved ones.",
 };
 
-export const fontSans = FontSans({
+const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
@@ -23,7 +23,7 @@ export default function RootLayout({
   modal,
 }: {
   children: React.ReactNode;
-  modal?: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
