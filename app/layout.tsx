@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning={true}>
       <body
         className={cn(
-          "bg-background text-foreground min-h-[100vh]",
+          "bg-background text-foreground min-h-[100vh] grid grid-rows-[auto,1fr,auto] gap-y-4",
           fontSans.variable
         )}
       >
@@ -39,7 +39,7 @@ export default function RootLayout({
           <Toaster richColors />
           <div id="modal-root" />
         </main>
-        <footer className="p-4 text-xs text-center text-slate-400">
+        <footer className="p-4 text-xs text-center text-slate-400 row-start-3 row-span-1">
           <p>© {new Date().getFullYear()} Farewell boards </p>
         </footer>
       </body>

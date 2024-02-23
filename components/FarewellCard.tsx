@@ -86,7 +86,7 @@ function FarewellCard(props: {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <CardDescription>{props.description}</CardDescription>
+        <CardDescription className="text-balance">{props.description}</CardDescription>
       </CardContent>
       <CardFooter>{formatDate(props.created_at)}</CardFooter>
     </Card>
